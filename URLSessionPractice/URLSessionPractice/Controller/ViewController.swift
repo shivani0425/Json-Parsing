@@ -46,24 +46,26 @@ class ViewController: UIViewController {
                     }
                     
                     for eachEmployeeDic in jsonObject {
-                        
+                        // TODO: Convert Nested If to guard-let for better readability
                        // let user = eachEmployeeDic as [String:Any]
                         let empID = eachEmployeeDic["id "] as? String
                         let empName = eachEmployeeDic["name"] as? String
                         
                         if let address = eachEmployeeDic["address"] as? [String: Any] {
                             let empStreet = address["street"] as? String
-                            let empZipcode = address["zipcode"] as? String
+                            let empZipcode = address["zipcode"] as? String ?? "0"
+                            let zipCode = Double(empZipcode)
                             
                             if let geo = address["geo"] as? [String:Any] {
-                                let emplat = geo["lat"] as? String
+                                let emplat = geo["lat"] as? String ?? "0"
+                                let lat = Double(emplat)
                                 let emplng = geo["lng"] as? String
                                 
                                 let employee = EmployeeModel(id: empID ?? "",
                                                              name: empName ?? "",
                                                              street: empStreet ?? "",
-                                                             zipcode: empZipcode ?? "",
-                                                             lat: emplat ?? "",
+                                                             zipcode: zipCode ?? 0,
+                                                             lat: lat ?? 0,
                                                              lng: emplng ?? "")
                                 
                                 self.employeeDetailsArray.append(employee)
@@ -79,12 +81,10 @@ class ViewController: UIViewController {
                 }
                 
             } else {
-                print(error?.localizedDescription)
+                print(error?.localizedDescription ?? "")
             }
-            
         }
         dataTask.resume()
-        
     }
 }
 
@@ -109,8 +109,6 @@ extension ViewController: UITableViewDataSource, UITableViewDelegate {
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 100
     }
-    
-    
 }
 
 //
