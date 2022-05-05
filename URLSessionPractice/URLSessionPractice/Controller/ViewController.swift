@@ -53,8 +53,8 @@ class ViewController: UIViewController {
                         
                         if let address = eachEmployeeDic["address"] as? [String: Any] {
                             let empStreet = address["street"] as? String
-                            let empZipcode = address["zipcode"] as? String ?? "0"
-                            let zipCode = Double(empZipcode)
+                            let empZipcode = address["zipcode"] as? String
+/*ZipCode cannot be converted to Double as most of them has "-" (hyphen) If Converted it take the Default value*/
                             
                             if let geo = address["geo"] as? [String:Any] {
                                 let emplat = geo["lat"] as? String ?? "0"
@@ -64,7 +64,7 @@ class ViewController: UIViewController {
                                 let employee = EmployeeModel(id: empID ?? "",
                                                              name: empName ?? "",
                                                              street: empStreet ?? "",
-                                                             zipcode: zipCode ?? 0,
+                                                             zipcode: empZipcode ?? "",
                                                              lat: lat ?? 0,
                                                              lng: emplng ?? "")
                                 
